@@ -1,6 +1,6 @@
 {
     "short_name": "pwa-test",
-    "start_url": "/",
+    "start_url": "/pwa-test/",
     "display": "standalone",
     "icons": [
       {
