@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PWA test with GH Pages</title>
     <link rel="canonical" href="https://dafughes.github.io/pwa-test/" />
-    <link rel="manifest" href="/pwa-test/manifest.webmanifest">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="icon" href="icon.png">
 </head>
 
 <body>
@@ -17,12 +18,18 @@
     </p>
 
     <script>
-        if (navigator.serviceWorker) {
-            navigator.serviceWorker.register(
-                '/pwa-test/sw.js',
-                { scope: '/pwa-test/' }
-            )
-        }
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker.register("sw.js").then(
+              (registration) => {
+                console.log("Service worker registration successful:", registration);
+              },
+              (error) => {
+                console.error(`Service worker registration failed: ${error}`);
+              },
+            );
+          } else {
+            console.error("Service workers are not supported.");
+          }
     </script>
     <script src="js/app.js"></script>
 </body>
