@@ -1,10 +1,10 @@
 // Files to cache
 const cacheName = 'pwa-test-v1';
 const appShellFiles = [
-  '/pwa-test/',
-  '/pwa-test/index.html',
-  '/pwa-test/js/app.js',
-  '/pwa-test/icon.png'
+  '/',
+  '/index.html',
+  '/js/app.js',
+  '/icon.png'
 ];
 
 const contentToCache = appShellFiles;
