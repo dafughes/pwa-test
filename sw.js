@@ -1,65 +1,41 @@
-// The version of the cache.
-const VERSION = "v1";
-
-// The name of the cache
-const CACHE_NAME = `pwa-test-${VERSION}`;
-
-// The static resources that the app needs to function.
-const APP_STATIC_RESOURCES = [
-  "/",
-  "/index.html",
-  "/js/app.js",
-  "/icon.png",
+// Files to cache
+const cacheName = 'pwa-test-v1';
+const appShellFiles = [
+  '/pwa-test/',
+  '/pwa-test/index.html',
+  '/pwa-test/js/app.js',
+  '/pwa-test/icon.png'
 ];
 
-// On install, cache the static resources
-self.addEventListener("install", (event) => {
-  event.waitUntil(
-    (async () => {
-      const cache = await caches.open(CACHE_NAME);
-      cache.addAll(APP_STATIC_RESOURCES);
-    })(),
-  );
+const contentToCache = appShellFiles;
+
+// Installing Service Worker
+self.addEventListener('install', (e) => {
+  console.log('[Service Worker] Install');
+  e.waitUntil((async () => {
+    const cache = await caches.open(cacheName);
+    console.log('[Service Worker] Caching all: app shell and content');
+    await cache.addAll(contentToCache);
+  })());
 });
 
-// delete old caches on activate
-self.addEventListener("activate", (event) => {
-  event.waitUntil(
-    (async () => {
-      const names = await caches.keys();
-      await Promise.all(
-        names.map((name) => {
-          if (name !== CACHE_NAME) {
-            return caches.delete(name);
-          }
-          return undefined;
-        }),
-      );
-      await clients.claim();
-    })(),
-  );
-});
+// Fetching content using Service Worker
+self.addEventListener('fetch', (e) => {
+    // Cache http and https only, skip unsupported chrome-extension:// and file://...
+    if (!(
+       e.request.url.startsWith('http:') || e.request.url.startsWith('https:')
+    )) {
+        return; 
+    }
 
-// On fetch, intercept server requests
-// and respond with cached responses instead of going to network
-self.addEventListener("fetch", (event) => {
-  // As a single page app, direct app to always go to cached home page.
-  if (event.request.mode === "navigate") {
-    event.respondWith(caches.match("/"));
-    return;
-  }
-
-  // For all other requests, go to the cache first, and then the network.
-  event.respondWith(
-    (async () => {
-      const cache = await caches.open(CACHE_NAME);
-      const cachedResponse = await cache.match(event.request.url);
-      if (cachedResponse) {
-        // Return the cached response if it's available.
-        return cachedResponse;
-      }
-      // If resource isn't in the cache, return a 404.
-      return new Response(null, { status: 404 });
-    })(),
-  );
+  e.respondWith((async () => {
+    const r = await caches.match(e.request);
+    console.log(`[Service Worker] Fetching resource: ${e.request.url}`);
+    if (r) return r;
+    const response = await fetch(e.request);
+    const cache = await caches.open(cacheName);
+    console.log(`[Service Worker] Caching new resource: ${e.request.url}`);
+    cache.put(e.request, response.clone());
+    return response;
+  })());
 });
