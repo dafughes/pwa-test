@@ -9,6 +9,7 @@ const APP_STATIC_RESOURCES = [
   "/",
   "/index.html",
   "/js/app.js",
+  "/manifest.webmanifest",
   "/icon.png",
 ];
 
