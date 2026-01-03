@@ -6,5 +6,12 @@
     "start_url": "/github-page-pwa/",
     "background_color": "#ffffff",
     "theme_color": "#ffffff",
-    "display": "standalone"
+    "display": "standalone",
+    "icons": [
+      {
+        "src": "/github-page-pwa/icon.png",
+        "type": "image/png",
+        "sizes": "128x128"
+      }
+  ]
 }
