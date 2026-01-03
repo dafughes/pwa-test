@@ -6,7 +6,20 @@
       {
         "src": "icon.png",
         "type": "image/png",
-        "sizes": "128x128"
+        "sizes": "256x256"
       }
-  ]
+    ],
+    "screenshots": [
+  {
+    "src": "screenshots/home.png",
+    "sizes": "1280x720",
+    "type": "image/png",
+    "form_factor": "wide"
+  },
+  {
+    "src": "screenshots/dashboard.png",
+    "sizes": "1280x720",
+    "type": "image/png"
+  }
+]
 }
