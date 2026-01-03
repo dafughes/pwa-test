@@ -1,6 +1,6 @@
 {
     "short_name": "pwa-test",
-    "start_url": "/pwa-test/",
+    "start_url": "https://dafughes.github.io/pwa-test/",
     "display": "standalone",
     "icons": [
       {
